@@ -1,0 +1,372 @@
+
+CREATE TABLE Member (
+    member_id INT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    phone VARCHAR(15),
+    DOB DATE NOT NULL
+);
+
+
+CREATE TABLE Staff (
+    staff_id INT PRIMARY KEY,
+    staff_name VARCHAR(100) NOT NULL,
+    role VARCHAR(50) NOT NULL
+);
+
+
+CREATE TABLE Service (
+    service_id INT PRIMARY KEY,
+    service_name VARCHAR(100) NOT NULL,
+    description TEXT,
+    price DECIMAL(10,2) NOT NULL
+);
+
+
+CREATE TABLE Subscription (
+    subscription_id INT PRIMARY KEY,
+    member_id INT NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    FOREIGN KEY (member_id) REFERENCES Member(member_id)
+);
+
+CREATE TABLE Payment (
+    payment_id INT PRIMARY KEY,
+    subscription_id INT NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    payment_date DATE NOT NULL,
+    FOREIGN KEY (subscription_id) REFERENCES Subscription(subscription_id)
+);
+
+
+CREATE TABLE Schedule (
+    schedule_id INT PRIMARY KEY,
+    member_id INT NOT NULL,
+    service_id INT NOT NULL,
+    staff_id INT NOT NULL,
+    date_time DATE NOT NULL,
+    FOREIGN KEY (member_id) REFERENCES Member(member_id),
+    FOREIGN KEY (service_id) REFERENCES Service(service_id)
+
+);
+
+
+
+
+
+INSERT INTO Member (member_id, name, email, phone, DOB)
+VALUES
+(101, 'Alice Johnson', 'alice.johnson@example.com', '0211234567', '1995-04-12'),
+(102, 'Bob Williams', 'bob.williams@example.com', '0212345678', '1988-07-25'),
+(103, 'Charlie Smith', 'charlie.smith@example.com', '0213456789', '1992-11-05'),
+(104, 'Peter Parker', 'peter.parker@example.com', '02123456789', '1987-06-25'),
+(105, 'Carol Jane', 'carol.jane@example.com', '0213456789', '1990-12-05');
+
+
+
+INSERT INTO Staff (staff_id, staff_name, role)
+VALUES
+(1, 'Jhonny Smith', 'Trainer'),
+(2, 'Sarah Lee', 'Nutritionist'),
+(3, 'Mark Taylor', 'Physiotherapist'),
+(4, 'Danny Boy', 'Trainer'),
+(5, 'Luke Kaile', 'Trainer');
+
+
+INSERT INTO Service (service_id, service_name, description, price)
+VALUES
+(1001, 'Personal Training', 'One-on-one training sessions', 40.00),
+(1002, 'Diet Plan', 'Customized diet plan for fitness goals', 20.00),
+(1003, 'Yoga Class', 'Group yoga session for flexibility and relaxation', 15.00),
+(1004, 'Muscle Gain', 'Customized workout plan for Muscle Gain', 25.00),
+(1005, 'Weight Loss', 'Customized workout plan for Weight Loss', 35.00);
+
+
+INSERT INTO Subscription (subscription_id, member_id, start_date, end_date)
+VALUES
+(111, 101, '2025-01-01', '2025-01-31'),
+(222, 102, '2025-02-01', '2025-02-28'),
+(333, 103, '2025-03-01', '2025-03-31'),
+(444, 104, '2025-04-01', '2025-04-28'),
+(555, 105, '2025-05-01', '2025-05-31');
+
+
+INSERT INTO Payment (payment_id, subscription_id, amount, payment_date)
+VALUES
+(1, 1, 50.00, '2025-01-10'),
+(2, 2, 75.00, '2025-02-15'),
+(3, 3, 100.00, '2025-03-05'),
+(4, 2, 60.00, '2025-05-15'),
+(5, 3, 60.00, '2025-07-05');
+
+
+INSERT INTO Schedule (schedule_id, member_id, service_id, staff_id, date_time)
+VALUES
+(1021, 101, 1001, 1, '2025-01-15'),
+(1022, 102, 1002, 2, '2025-02-20'),
+(1023, 103, 1003, 3, '2025-03-10'),
+(1024, 104, 1004, 4, '2025-04-20'),
+(1025, 105, 1005, 5, '2025-05-10');
+
+
+
+
+
+
+
+
+
+
+
+
+
+==================================================================================================================================
+
+
+
+
+1. Register a new user account – A new user creates a personal account by entering details such as name, email, and password.
+
+INSERT INTO Member (name, email, phone, DOB, password_hash)
+VALUES ('John Doe','john@example.com','0219999999','1998-05-01','hash_here');
+.mode column
+
+
+2. Subscribe to a weekly/monthly/annual plan – A member chooses a subscription package (Normal or Premium) with defined validity periods.
+
+-- Weekly Normal
+INSERT INTO Subscription (member_id, start_date, end_date, plan_tier)
+VALUES (101, '2025-09-15', DATE('2025-09-15','+7 days'), 'Normal');
+
+-- Monthly Premium
+INSERT INTO Subscription (member_id, start_date, end_date, plan_tier)
+VALUES (101, '2025-09-15', DATE('2025-09-15','+1 month'), 'Premium');
+
+-- Annual Premium
+INSERT INTO Subscription (member_id, start_date, end_date, plan_tier)
+VALUES (103, '2025-09-15', DATE('2025-09-15','+1 year'), 'Premium');
+
+SELECT * FROM Subscription WHERE member_id=101;
+
+
+3. Add or remove optional services – Members customize their subscriptions with add-ons such as personal training or nutrition counseling.
+
+Add service
+
+INSERT INTO Schedule (member_id, service_id, staff_id, date_time, subscription_id)
+VALUES (101, 1001, 1, '2025-09-20', 111);
+
+Delete the service
+
+DELETE FROM Schedule
+WHERE member_id = 106
+  AND service_id = 1001
+  AND subscription_id = 667;
+
+
+4. View or update personal information in the user dashboard – Members manage their personal profile and preferences.
+
+-- view profile
+SELECT member_id, name, email, phone, DOB
+FROM Member
+WHERE member_id = 101;
+
+-- update profile
+UPDATE Member
+SET phone = '0218888888'
+WHERE member_id = 101;
+
+-- verify
+SELECT member_id, name, phone FROM Member WHERE member_id = 101;
+
+
+
+
+====================================================================================================================================
+
+
+
+
+
+
+
+
+5. Book/cancel fitness classes or personal training sessions – Members reserve or cancel slots for gym activities or personal coaching.
+
+INSERT INTO Schedule (member_id, service_id, staff_id, date_time)
+VALUES (1, 1, 1, '2025-09-15');
+
+DELETE FROM Schedule
+WHERE schedule_id = 2;
+
+SELECT s.schedule_id, m.name AS member_name, sv.service_name, st.staff_name, s.date_time
+FROM Schedule s
+JOIN Member m ON s.member_id = m.member_id
+JOIN Service sv ON s.service_id = sv.service_id
+JOIN Staff st ON s.staff_id = st.staff_id
+ORDER BY s.date_time;
+
+
+6.Track workout history and progress – Members view attendance, activity records, and progress logs stored in the system.
+
+SELECT m.name AS member_name, sv.service_name, st.staff_name, s.date_time
+FROM Schedule s
+JOIN Member m ON s.member_id = m.member_id
+JOIN Service sv ON s.service_id = sv.service_id
+JOIN Staff st ON s.staff_id = st.staff_id
+WHERE s.member_id = 1
+ORDER BY s.date_time;
+
+SELECT m.name, COUNT(s.schedule_id) AS total_sessions
+FROM Schedule s
+JOIN Member m ON s.member_id = m.member_id
+WHERE s.member_id = 1
+GROUP BY m.name;
+
+
+
+7.Make payments and view billing history – Members process subscription payments and check past transactions.
+
+INSERT INTO Payment (subscription_id, amount, payment_date)
+VALUES (2, 80.00, '2025-09-10');
+
+SELECT p.payment_id, m.name, p.amount, p.payment_date
+FROM Payment p
+JOIN Subscription sub ON p.subscription_id = sub.subscription_id
+JOIN Member m ON sub.member_id = m.member_id
+WHERE m.member_id = 2
+ORDER BY p.payment_date DESC;
+
+SELECT m.name, SUM(p.amount) AS total_paid
+FROM Payment p
+JOIN Subscription sub ON p.subscription_id = sub.subscription_id
+JOIN Member m ON sub.member_id = m.member_id
+WHERE m.member_id = 2
+GROUP BY m.name;
+
+
+8. Provide feedback or rate services – Members share experiences and rate trainers, classes, or overall services.
+
+SELECT m.name AS member, sv.service_name, st.staff_name, 
+       'Great session, very helpful!' AS feedback, 5 AS rating
+FROM Schedule s
+JOIN Member m ON s.member_id = m.member_id
+JOIN Service sv ON s.service_id = sv.service_id
+JOIN Staff st ON s.staff_id = st.staff_id
+WHERE s.schedule_id = 1;
+
+
+
+
+
+
+===================================================================================================================================
+
+
+
+
+
+
+
+
+
+
+9. View gym facility schedule and availability – Members check schedules for classes, trainers, 
+and available gym facilities. 
+
+SELECT s.schedule_id, m.name AS member_name, sv.service_name, st.staff_name, s.date_time
+FROM Schedule s
+JOIN Member m ON s.member_id = m.member_id
+JOIN Service sv ON s.service_id = sv.service_id
+JOIN Staff st ON s.staff_id = st.staff_id
+ORDER BY s.date_time;
+
+
+
+10. Add/edit/remove services and classes – Administrators manage the available fitness services 
+and optional packages. 
+
+INSERT INTO Service (service_id, service_name, description, price)
+VALUES (1006, 'Pilates Class', 'Strength and flexibility training', 18.00);
+
+Edit a service/class
+
+UPDATE Service
+SET price = 22.00, description = 'Updated Pilates session details'
+WHERE service_id = 1006;
+
+DELETE FROM Service
+WHERE service_id = 1006;
+
+
+11.Manage trainer schedules and assignments – Admins allocate trainers to classes or personal 
+sessions. 
+
+-- Assign a trainer to a new schedule
+INSERT INTO Schedule (schedule_id, member_id, service_id, staff_id, date_time)
+VALUES (1026, 101, 1003, 2, '2025-06-15');
+
+-- Update trainer for an existing schedule
+UPDATE Schedule
+SET staff_id = 4
+WHERE schedule_id = 1026;
+
+-- Remove a trainer assignment
+DELETE FROM Schedule
+WHERE schedule_id = 1026;
+
+
+
+12. Process payments and handle billing issues – Admins verify payments, resolve disputes, and 
+manage financial records. 
+
+-- Record a new payment
+INSERT INTO Payment (payment_id, subscription_id, amount, payment_date)
+VALUES (6, 111, 50.00, '2025-06-01');
+
+-- Correct a billing error (e.g., wrong amount)
+UPDATE Payment
+SET amount = 55.00
+WHERE payment_id = 6;
+
+-- Delete a duplicate payment
+DELETE FROM Payment
+WHERE payment_id = 6;
+
+
+
+13. Generate reports on membership, revenue, and attendance – The system provides analytical 
+reports for management decisions. 
+
+
+Membership Report
+SELECT COUNT(*) AS total_members
+FROM Member;
+
+
+Revenue Report
+SELECT SUM(amount) AS total_revenue
+FROM Payment;
+
+
+Attendance Report (who attended schedules)
+SELECT sv.service_name, COUNT(s.schedule_id) AS total_sessions
+FROM Schedule s
+JOIN Service sv ON s.service_id = sv.service_id
+GROUP BY sv.service_name;
+
+
+
+
+
+14. View gym facility schedule and availability (for administrators) -  – Administrators ensure the timetable is accurate 
+and facilities are optimally utilized.
+
+SELECT s.schedule_id, sv.service_name, st.staff_name, m.name AS member_name, s.date_time
+FROM Schedule s
+JOIN Service sv ON s.service_id = sv.service_id
+JOIN Staff st ON s.staff_id = st.staff_id
+JOIN Member m ON s.member_id = m.member_id
+ORDER BY s.date_time;
+
