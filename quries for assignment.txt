@@ -1,0 +1,53 @@
+1. Register a new user account – A new user creates a personal account by entering details such as name, email, and password.
+
+INSERT INTO Member (name, email, phone, DOB, password_hash)
+VALUES ('John Doe','john@example.com','0219999999','1998-05-01','hash_here');
+.mode column
+
+
+2. Subscribe to a weekly/monthly/annual plan – A member chooses a subscription package (Normal or Premium) with defined validity periods.
+
+-- Weekly Normal
+INSERT INTO Subscription (member_id, start_date, end_date, plan_tier)
+VALUES (101, '2025-09-15', DATE('2025-09-15','+7 days'), 'Normal');
+
+-- Monthly Premium
+INSERT INTO Subscription (member_id, start_date, end_date, plan_tier)
+VALUES (101, '2025-09-15', DATE('2025-09-15','+1 month'), 'Premium');
+
+-- Annual Premium
+INSERT INTO Subscription (member_id, start_date, end_date, plan_tier)
+VALUES (103, '2025-09-15', DATE('2025-09-15','+1 year'), 'Premium');
+
+SELECT * FROM Subscription WHERE member_id=101;
+
+
+3. Add or remove optional services – Members customize their subscriptions with add-ons such as personal training or nutrition counseling.
+
+Add service
+
+INSERT INTO Schedule (member_id, service_id, staff_id, date_time, subscription_id)
+VALUES (101, 1001, 1, '2025-09-20', 111);
+
+Delete the service
+
+DELETE FROM Schedule
+WHERE member_id = 106
+  AND service_id = 1001
+  AND subscription_id = 667;
+
+
+4. View or update personal information in the user dashboard – Members manage their personal profile and preferences.
+
+-- view profile
+SELECT member_id, name, email, phone, DOB
+FROM Member
+WHERE member_id = 101;
+
+-- update profile
+UPDATE Member
+SET phone = '0218888888'
+WHERE member_id = 101;
+
+-- verify
+SELECT member_id, name, phone FROM Member WHERE member_id = 101;

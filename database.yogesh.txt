@@ -1,0 +1,103 @@
+
+/* ===== TABLES ===== */
+
+CREATE TABLE Member (
+    member_id     INTEGER PRIMARY KEY,
+    name          TEXT NOT NULL,
+    email         TEXT UNIQUE NOT NULL,
+    phone         TEXT,
+    DOB           DATE NOT NULL,
+    password_hash TEXT NOT NULL
+);
+
+CREATE TABLE Staff (
+    staff_id    INTEGER PRIMARY KEY,
+    staff_name  TEXT NOT NULL,
+    role        TEXT NOT NULL
+);
+
+CREATE TABLE Service (
+    service_id   INTEGER PRIMARY KEY,
+    service_name TEXT NOT NULL,
+    description  TEXT,
+    price        DECIMAL(10,2) NOT NULL
+);
+
+/* plan_tier: use TEXT + CHECK instead of ENUM */
+CREATE TABLE Subscription (
+    subscription_id INTEGER PRIMARY KEY,
+    member_id       INTEGER NOT NULL,
+    start_date      DATE NOT NULL,
+    end_date        DATE NOT NULL,
+    plan_tier       TEXT NOT NULL DEFAULT 'Normal'
+                    CHECK (plan_tier IN ('Normal','Premium')),
+    FOREIGN KEY (member_id) REFERENCES Member(member_id)
+);
+
+CREATE TABLE Payment (
+    payment_id      INTEGER PRIMARY KEY,
+    subscription_id INTEGER NOT NULL,
+    amount          DECIMAL(10,2) NOT NULL,
+    payment_date    DATE NOT NULL,
+    FOREIGN KEY (subscription_id) REFERENCES Subscription(subscription_id)
+);
+
+CREATE TABLE Schedule (
+    schedule_id     INTEGER PRIMARY KEY,
+    member_id       INTEGER NOT NULL,
+    service_id      INTEGER NOT NULL,
+    staff_id        INTEGER NOT NULL,
+    date_time       DATE NOT NULL,
+    subscription_id INTEGER,
+    FOREIGN KEY (member_id) REFERENCES Member(member_id),
+    FOREIGN KEY (service_id) REFERENCES Service(service_id),
+    FOREIGN KEY (subscription_id) REFERENCES Subscription(subscription_id)
+);
+
+/* ===== DATA ===== */
+
+INSERT INTO Member (member_id, name, email, phone, DOB, password_hash) VALUES
+(101,'Alice Johnson','alice.johnson@example.com','0211234567','1995-04-12','$2y$10$placeholder_alice'),
+(102,'Bob Williams','bob.williams@example.com','0212345678','1988-07-25','$2y$10$placeholder_bob'),
+(103,'Charlie Smith','charlie.smith@example.com','0213456789','1992-11-05','$2y$10$placeholder_charlie'),
+(104,'Peter Parker','peter.parker@example.com','02123456789','1987-06-25','$2y$10$placeholder_peter'),
+(105,'Carol Jane','carol.jane@example.com','0213456789','1990-12-05','$2y$10$placeholder_carol'),
+(106,'Yogesh Gurung','yogesh.gurung@example.com','0219876543','2000-08-15','$2y$10$placeholder_yogesh');
+
+INSERT INTO Staff (staff_id, staff_name, role) VALUES
+(1,'Jhonny Smith','Trainer'),
+(2,'Sarah Lee','Nutritionist'),
+(3,'Mark Taylor','Physiotherapist'),
+(4,'Danny Boy','Trainer'),
+(5,'Luke Kaile','Trainer');
+
+INSERT INTO Service (service_id, service_name, description, price) VALUES
+(1001,'Personal Training','One-on-one training sessions',40.00),
+(1002,'Diet Plan','Customized diet plan for fitness goals',20.00),
+(1003,'Yoga Class','Group yoga session for flexibility and relaxation',15.00),
+(1004,'Muscle Gain','Customized workout plan for Muscle Gain',25.00),
+(1005,'Weight Loss','Customized workout plan for Weight Loss',35.00);
+
+INSERT INTO Subscription (subscription_id, member_id, start_date, end_date, plan_tier) VALUES
+(111,101,'2025-01-01','2025-01-31','Normal'),
+(222,102,'2025-02-01','2025-02-28','Premium'),
+(333,103,'2025-03-01','2025-03-31','Normal'),
+(444,104,'2025-04-01','2025-04-28','Normal'),
+(555,105,'2025-05-01','2025-05-31','Premium'),
+-- Yogesh: use a fixed end date (SQLite has no DATE_ADD)
+(667,106,'2025-09-13','2025-10-13','Premium');
+
+INSERT INTO Payment (payment_id, subscription_id, amount, payment_date) VALUES
+(1,111,50.00,'2025-01-10'),
+(2,222,75.00,'2025-02-15'),
+(3,333,100.00,'2025-03-05'),
+(4,222,60.00,'2025-05-15'),
+(5,333,60.00,'2025-07-05');
+
+INSERT INTO Schedule (schedule_id, member_id, service_id, staff_id, date_time, subscription_id) VALUES
+(1021,101,1001,1,'2025-01-15',111),
+(1022,102,1002,2,'2025-02-20',222),
+(1023,103,1003,3,'2025-03-10',333),
+(1024,104,1004,4,'2025-04-20',444),
+(1025,105,1005,5,'2025-05-10',555),
+(1061,106,1001,1,'2025-09-20',667);
