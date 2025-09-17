@@ -1,0 +1,63 @@
+Book/cancel fitness classes or personal training sessions – Members reserve or cancel slots for gym activities or personal coaching.
+
+INSERT INTO Schedule (member_id, service_id, staff_id, date_time)
+VALUES (1, 1, 1, '2025-09-15');
+
+DELETE FROM Schedule
+WHERE schedule_id = 2;
+
+SELECT s.schedule_id, m.name AS member_name, sv.service_name, st.staff_name, s.date_time
+FROM Schedule s
+JOIN Member m ON s.member_id = m.member_id
+JOIN Service sv ON s.service_id = sv.service_id
+JOIN Staff st ON s.staff_id = st.staff_id
+ORDER BY s.date_time;
+
+
+ Track workout history and progress – Members view attendance, activity records, and progress logs stored in the system.
+
+SELECT m.name AS member_name, sv.service_name, st.staff_name, s.date_time
+FROM Schedule s
+JOIN Member m ON s.member_id = m.member_id
+JOIN Service sv ON s.service_id = sv.service_id
+JOIN Staff st ON s.staff_id = st.staff_id
+WHERE s.member_id = 1
+ORDER BY s.date_time;
+
+SELECT m.name, COUNT(s.schedule_id) AS total_sessions
+FROM Schedule s
+JOIN Member m ON s.member_id = m.member_id
+WHERE s.member_id = 1
+GROUP BY m.name;
+
+
+
+ Make payments and view billing history – Members process subscription payments and check past transactions.
+
+INSERT INTO Payment (subscription_id, amount, payment_date)
+VALUES (2, 80.00, '2025-09-10');
+
+SELECT p.payment_id, m.name, p.amount, p.payment_date
+FROM Payment p
+JOIN Subscription sub ON p.subscription_id = sub.subscription_id
+JOIN Member m ON sub.member_id = m.member_id
+WHERE m.member_id = 2
+ORDER BY p.payment_date DESC;
+
+SELECT m.name, SUM(p.amount) AS total_paid
+FROM Payment p
+JOIN Subscription sub ON p.subscription_id = sub.subscription_id
+JOIN Member m ON sub.member_id = m.member_id
+WHERE m.member_id = 2
+GROUP BY m.name;
+
+
+Provide feedback or rate services – Members share experiences and rate trainers, classes, or overall services.
+
+SELECT m.name AS member, sv.service_name, st.staff_name, 
+       'Great session, very helpful!' AS feedback, 5 AS rating
+FROM Schedule s
+JOIN Member m ON s.member_id = m.member_id
+JOIN Service sv ON s.service_id = sv.service_id
+JOIN Staff st ON s.staff_id = st.staff_id
+WHERE s.schedule_id = 1;
