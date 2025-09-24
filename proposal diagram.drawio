@@ -1,0 +1,43 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.0.6 Chrome/138.0.7204.100 Electron/37.2.3 Safari/537.36" version="28.0.6">
+  <diagram name="Page-1" id="AYaVsSUm5DG2bf35POAL">
+    <mxGraphModel dx="524" dy="2171" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="KlV_JWBOYiXgwJ-X8Dfn-1" value="member" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="250" width="131" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="KlV_JWBOYiXgwJ-X8Dfn-2" value="Member ship plan" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="340" width="130" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="KlV_JWBOYiXgwJ-X8Dfn-3" value="Gym Member" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="930" y="250" width="70" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="KlV_JWBOYiXgwJ-X8Dfn-4" value="Staff/Admin" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="1211" y="-80" width="90" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="KlV_JWBOYiXgwJ-X8Dfn-7" value="Health Profile" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1065.5" y="430" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="KlV_JWBOYiXgwJ-X8Dfn-8" value="Payment" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1320" y="230" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="KlV_JWBOYiXgwJ-X8Dfn-9" value="attendence" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1320" y="340" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="KlV_JWBOYiXgwJ-X8Dfn-10" value="Text" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1365" y="428" width="50" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="KlV_JWBOYiXgwJ-X8Dfn-11" value="Booking" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1320" y="440" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="KlV_JWBOYiXgwJ-X8Dfn-12" value="Personal traning classes" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="80" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="KlV_JWBOYiXgwJ-X8Dfn-13" value="classes" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="150" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
